@@ -1,5 +1,4 @@
 package com.padrejuan.blogapi.Models;
-
 import jakarta.persistence.*;
 
 @Entity
@@ -13,8 +12,8 @@ public class Posts {
     private String content;
     @Column
     private String author_name;
-    //  @Column
-    //  private Comment[] comments;
+//    @Column
+//    private Comments[] comments;
 
     public long getPost_id() {
         return post_id;
