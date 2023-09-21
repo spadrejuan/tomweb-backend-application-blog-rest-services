@@ -1,8 +1,13 @@
 package com.padrejuan.blogapi.Models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
+@JsonInclude(JsonInclude.Include.ALWAYS)
 public class Comments {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -11,6 +16,8 @@ public class Comments {
     private String commenter_name;
     @Column
     private String comment_body;
+    @Column
+    private Long post_id;
     public long getComment_id() {
         return comment_id;
     }
@@ -28,5 +35,13 @@ public class Comments {
     }
     public void setComment_body(String comment_body) {
         this.comment_body = comment_body;
+    }
+
+    public Long getPost_id() {
+        return post_id;
+    }
+
+    public void setPost_id(Long post_id) {
+        this.post_id = post_id;
     }
 }

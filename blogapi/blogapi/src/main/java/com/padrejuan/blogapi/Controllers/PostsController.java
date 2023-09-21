@@ -1,56 +1,79 @@
 package com.padrejuan.blogapi.Controllers;
 import com.padrejuan.blogapi.Models.Posts;
+import com.padrejuan.blogapi.Repos.CommentsRepo;
 import com.padrejuan.blogapi.Repos.PostsRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 @RestController
 public class PostsController {
     @Autowired
     private PostsRepo postsRepo;
-    @GetMapping("/")
-    public String getPage(){
-        return "Welcome!";
-    }
-
-    //CHECK
+    //    TODO: Add JSON response when posts are null
     @GetMapping(value = "/posts")
-    public List<Posts> getPosts(){
-        return postsRepo.findAll();
+    public ResponseEntity<List<Posts>> getPosts(){
+        List<Posts> allPosts = postsRepo.findAll();
+        if (allPosts.isEmpty())
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+
+        else
+            return new ResponseEntity<>(allPosts, HttpStatus.OK);
     }
 
-    //CHECK
-//    TODO: Add exception error if there are no posts with post_id
+
+//    TODO: Add error exception/JSON  response when posts are null
+//    TODO: InternalServerError when out of bounds
     @GetMapping(value = "/posts/{post_id}")
-    public Posts getSpecificPost(@PathVariable long post_id){
-        return postsRepo.findById(post_id).get();
+    public ResponseEntity<Posts> getSpecificPost(@PathVariable long post_id){
+        Posts specificPost = postsRepo.findById(post_id).get();
+        if (specificPost == null)
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        else
+            return new ResponseEntity<>(specificPost, HttpStatus.OK);
     }
-
-    // CHECK
     @PostMapping(value = "/posts")
-    public String savePost(@RequestBody Posts post){
-        postsRepo.save(post);
-        return "Saved!!";
+    public ResponseEntity<Posts> savePost(@RequestBody Posts post){
+        Posts newPost = postsRepo.save(post);
+        return new ResponseEntity<>(newPost, HttpStatus.OK);
     }
 
 
-    //CHECK
+//    TODO: Add error exception/JSON  response when posts are null
+    //    TODO: InternalServerError when out of bounds
+
     @PatchMapping(value ="/posts/{post_id}")
-    public String editPost(@PathVariable long post_id, @RequestBody Posts post){
+    public ResponseEntity<Posts> editPost(@PathVariable long post_id, @RequestBody Posts post){
         Posts editedPost = postsRepo.findById(post_id).get();
-        editedPost.setTitle(post.getTitle());
-        editedPost.setContent(post.getContent());
-        editedPost.setAuthor_name(post.getAuthor_name());
-        postsRepo.save(editedPost);
-        return "Updated!";
+        if (editedPost == null)
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        else {
+            editedPost.setTitle(post.getTitle());
+            editedPost.setContent(post.getContent());
+            editedPost.setAuthor_name(post.getAuthor_name());
+            postsRepo.save(editedPost);
+            return new ResponseEntity<>(editedPost, HttpStatus.OK);
+        }
     }
 
-    //CHECK
+//    TODO: Add boolean response when successfully deleted
+//    TODO: Comments must also be deleted
     @DeleteMapping(value ="/posts/{post_id}")
-    public String deletePost(@PathVariable long post_id){
+    public ResponseEntity<Posts> deletePost(@PathVariable long post_id){
         Posts deletePost = postsRepo.findById(post_id).get();
-        postsRepo.delete(deletePost);
-        return "Post deleted with id number: " + post_id;
+        if(deletePost == null){
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        else{
+            postsRepo.deleteById(post_id);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
     }
+
+//    TODO:
+//    Pagination
+//    Search filters
+
 
 }
