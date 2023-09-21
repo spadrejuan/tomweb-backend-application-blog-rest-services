@@ -1,4 +1,5 @@
 package com.padrejuan.blogapi.Controllers;
+import com.padrejuan.blogapi.Models.Comments;
 import com.padrejuan.blogapi.Models.Posts;
 import com.padrejuan.blogapi.Repos.CommentsRepo;
 import com.padrejuan.blogapi.Repos.PostsRepo;
@@ -6,11 +7,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import javax.management.Query;
 import java.util.List;
 @RestController
 public class PostsController {
     @Autowired
     private PostsRepo postsRepo;
+    @Autowired
+    private CommentsRepo commentsRepo;
     //    TODO: Add JSON response when posts are null
     @GetMapping(value = "/posts")
     public ResponseEntity<List<Posts>> getPosts(){
@@ -58,7 +63,6 @@ public class PostsController {
     }
 
 //    TODO: Add boolean response when successfully deleted
-//    TODO: Comments must also be deleted
     @DeleteMapping(value ="/posts/{post_id}")
     public ResponseEntity<Posts> deletePost(@PathVariable long post_id){
         Posts deletePost = postsRepo.findById(post_id).get();
@@ -67,6 +71,7 @@ public class PostsController {
         }
         else{
             postsRepo.deleteById(post_id);
+
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
     }

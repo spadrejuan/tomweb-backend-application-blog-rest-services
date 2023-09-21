@@ -1,12 +1,12 @@
 package com.padrejuan.blogapi.Models;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
+import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
-
 import javax.xml.stream.events.Comment;
 import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @JsonInclude(JsonInclude.Include.ALWAYS)
@@ -21,9 +21,8 @@ public class Posts {
     @Column
     private String author_name;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "post_id", referencedColumnName = "post_id")
-    @OnDelete(action = OnDeleteAction.CASCADE)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "post_id", updatable = false, insertable = false)
     private Set<Comments> comments;
 
     public long getPost_id() {
