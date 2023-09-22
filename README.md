@@ -8,6 +8,7 @@ A MySQL Schema (MySQL 8.0 or above) is needed to run the API. In the project fol
 ![image](https://github.com/spadrejuan/tomweb-backend-application-blog-rest-services/assets/145114916/0484a169-3b39-467b-9ba5-978c02903f60)
 
 Use the following values to connect the API with your MySQL database successfully:
+
 spring.datasource.url=jdbc:mysql://localhost:[MySQL PORT]/[SCHEMA_NAME]?useSSL=false&serverTimezone=UTC
 
 spring.datasource.username=[YOUR_SQL_USERNAME]
@@ -21,11 +22,14 @@ A schema alone will suffice
 
 An installation of Maven is also needed to run the API, along with JDK 17 or higher. 
 Read more on installation here: 
+
 https://maven.apache.org/install.html
+
 https://docs.oracle.com/en/java/javase/20/install/overview-jdk-installation.html
 
 Also worthy to note is that Postman is the leading testing software for HTTPS methods and the API
 Read more here:
+
 https://www.postman.com/downloads/
 
 ## Usage
