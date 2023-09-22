@@ -1,78 +1,87 @@
 package com.padrejuan.blogapi.Controllers;
-import com.padrejuan.blogapi.Models.Comments;
 import com.padrejuan.blogapi.Models.Posts;
 import com.padrejuan.blogapi.Repos.CommentsRepo;
 import com.padrejuan.blogapi.Repos.PostsRepo;
+import com.padrejuan.blogapi.Response.ResponseHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.management.Query;
 import java.util.List;
+import java.util.NoSuchElementException;
+
 @RestController
 public class PostsController {
     @Autowired
     private PostsRepo postsRepo;
     @Autowired
     private CommentsRepo commentsRepo;
-    //    TODO: Add JSON response when posts are null
     @GetMapping(value = "/posts")
-    public ResponseEntity<List<Posts>> getPosts(){
-        List<Posts> allPosts = postsRepo.findAll();
-        if (allPosts.isEmpty())
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-
-        else
-            return new ResponseEntity<>(allPosts, HttpStatus.OK);
+    public ResponseEntity<Object> getPosts(){
+        try {
+            List<Posts> allPosts = postsRepo.findAll();
+            if (allPosts.isEmpty())
+                return ResponseHandler.postNotFound("There are no posts lately", HttpStatus.NOT_FOUND, null);
+            else
+                return new ResponseEntity<>(allPosts, HttpStatus.OK);
+        } catch(Exception e) {
+            return ResponseHandler.genericErrorException(e.getMessage(), HttpStatus.MULTI_STATUS,null);
+         }
     }
 
-
-//    TODO: Add error exception/JSON  response when posts are null
-//    TODO: InternalServerError when out of bounds
     @GetMapping(value = "/posts/{post_id}")
-    public ResponseEntity<Posts> getSpecificPost(@PathVariable long post_id){
-        Posts specificPost = postsRepo.findById(post_id).get();
-        if (specificPost == null)
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        else
+    public ResponseEntity<Object> getSpecificPost(@PathVariable long post_id) {
+        try {
+            Posts specificPost = postsRepo.findById(post_id).get();
             return new ResponseEntity<>(specificPost, HttpStatus.OK);
+        } catch(NoSuchElementException nee) {
+            return ResponseHandler.postNotFound("There are no posts with the id: " + post_id, HttpStatus.NOT_FOUND,null);
+        }
+           catch(Exception e) {
+            return ResponseHandler.genericErrorException(e.getMessage(), HttpStatus.MULTI_STATUS,null);
+           }
     }
     @PostMapping(value = "/posts")
-    public ResponseEntity<Posts> savePost(@RequestBody Posts post){
-        Posts newPost = postsRepo.save(post);
-        return new ResponseEntity<>(newPost, HttpStatus.OK);
+    public ResponseEntity<Object> savePost(@RequestBody Posts post){
+        try {
+            Posts newPost = postsRepo.save(post);
+            return new ResponseEntity<>(newPost, HttpStatus.OK);
+        } catch(Exception e) {
+            return ResponseHandler.genericErrorException(e.getMessage(), HttpStatus.MULTI_STATUS,null);
+        }
     }
 
-
-//    TODO: Add error exception/JSON  response when posts are null
-    //    TODO: InternalServerError when out of bounds
-
     @PatchMapping(value ="/posts/{post_id}")
-    public ResponseEntity<Posts> editPost(@PathVariable long post_id, @RequestBody Posts post){
-        Posts editedPost = postsRepo.findById(post_id).get();
-        if (editedPost == null)
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        else {
+    public ResponseEntity<Object> editPost(@PathVariable long post_id, @RequestBody Posts post){
+        try {
+            Posts editedPost = postsRepo.findById(post_id).get();
             editedPost.setTitle(post.getTitle());
             editedPost.setContent(post.getContent());
             editedPost.setAuthor_name(post.getAuthor_name());
             postsRepo.save(editedPost);
             return new ResponseEntity<>(editedPost, HttpStatus.OK);
+        } catch(NoSuchElementException nee) {
+            return ResponseHandler.postNotFound("There are no posts with the id: " + post_id, HttpStatus.NOT_FOUND,null);
+        }
+          catch(Exception e) {
+            return ResponseHandler.genericErrorException(e.getMessage(), HttpStatus.MULTI_STATUS,null);
         }
     }
-
-//    TODO: Add boolean response when successfully deleted
     @DeleteMapping(value ="/posts/{post_id}")
-    public ResponseEntity<Posts> deletePost(@PathVariable long post_id){
-        Posts deletePost = postsRepo.findById(post_id).get();
-        if(deletePost == null){
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        else{
+    public ResponseEntity<Object> deletePost(@PathVariable long post_id){
+        try {
+            Posts deletePost = postsRepo.findById(post_id).get();
             postsRepo.deleteById(post_id);
-
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            boolean delFlag = true;
+            return ResponseHandler.postDeleted("Successfully deleted post with id: " + post_id, HttpStatus.OK, delFlag);
+        } catch(NoSuchElementException nee) {
+                boolean delFlag = false;
+                return ResponseHandler.postDeleted("There are no posts with the id: " + post_id, HttpStatus.NOT_FOUND, delFlag);
+            }
+                catch(Exception e) {
+                return ResponseHandler.genericErrorException(e.getMessage(), HttpStatus.MULTI_STATUS,null);
+                }
         }
     }
 
@@ -81,4 +90,4 @@ public class PostsController {
 //    Search filters
 
 
-}
+
