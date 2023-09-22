@@ -40,5 +40,14 @@ Using Postman, you can go http://localhost:8080/ , and start appending the URL w
 JPA will automatically create the tables along with the primary keys, as long as the schema is provided in MySQL. 
 Do not forget to edit application.properties with the values in the Preliminaries section.
 
+## Features
+*Create a post
+*View one post or all posts
+*Edit post
+*Delete post along with any comments
+*Add a comment under a post
+*Edit a comment under a post
+*Delete a comment under a post
+
 ## End
 This project is partly done as a deliverable for TomasinoWeb's Backend Development Exam. I acknowledge that all submitted works shall be considered property of TomasinoWeb.
