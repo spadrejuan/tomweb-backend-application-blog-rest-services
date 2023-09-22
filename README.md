@@ -27,17 +27,17 @@ https://maven.apache.org/install.html
 
 https://docs.oracle.com/en/java/javase/20/install/overview-jdk-installation.html
 
-Also worthy to note is that Postman is the leading testing software for HTTPS methods and the API
+Also worthy to note is that Postman is the leading testing software for HTTPS methods and the API.
 Read more here:
 
 https://www.postman.com/downloads/
 
 ## Usage
-You can use an IDE like IntelliJ to open this project and build the Spring Boot, JPA, and MySQL dependencies.
+You can use an IDE like IntelliJ to open this project and build the Spring Boot, JPA, and MySQL dependencies. Run the program and check the command line to see if the program ran without any errors.
 Tomcat is the default server of Spring Boot, and it will likely run on port 8080.
 Using Postman, you can go http://localhost:8080/ , and start appending the URL with the HTTPS methods defined in the API.
 JPA will automatically create the tables along with the primary keys, as long as the schema is provided in MySQL. 
-Do not forget to edit application.properties with the values found in the Preliminaries section.
+Do not forget to edit application.properties with the values in the Preliminaries section.
 
 ## End
-This project is done in part as a deliverable for TomasinoWeb's Backend Development Exam.
+This project is partly done as a deliverable for TomasinoWeb's Backend Development Exam. I acknowledge that all submitted works shall be considered property of TomasinoWeb.
