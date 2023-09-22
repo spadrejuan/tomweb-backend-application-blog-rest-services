@@ -92,10 +92,7 @@ public class PostsController {
                 }
         }
     }
-
-//    TODO:
-//    Pagination
-//    Search filters
+    
 
 
 
