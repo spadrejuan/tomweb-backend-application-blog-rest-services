@@ -4,8 +4,9 @@ This blog API uses Java Maven, Spring Boot, and MySQL.
 Also included are ThymeLeaf dependencies for front-end development of this API, but not continued.
 
 ## Preliminaries
-A MySQL Schema (MySQL 8.0 or above) is needed to run the API. In the project folders, access application.properties as seen here:
-![image](https://github.com/spadrejuan/tomweb-backend-application-blog-rest-services/assets/145114916/0484a169-3b39-467b-9ba5-978c02903f60)
+A MySQL Schema (MySQL 8.0 or above) is needed to run the API. In the project folders, access application.properties found in path below
+
+blogapi\blogapi\src\main\resources
 
 Use the following values to connect the API with your MySQL database successfully:
 
