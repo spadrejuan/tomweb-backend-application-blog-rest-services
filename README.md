@@ -1,5 +1,5 @@
 # tomweb-backend-application-blog-rest-services
-This project is part of the backend development exam for TomasinoWeb
+This project is part of the backend development exam for TomasinoWeb.
 This blog API uses Java Maven, Spring Boot, and MySQL.
 Also included are ThymeLeaf dependencies for front-end development of this API, but not continued.
 
@@ -9,9 +9,13 @@ A MySQL Schema (MySQL 8.0 or above) is needed to run the API. In the project fol
 
 Use the following values to connect the API with your MySQL database successfully:
 spring.datasource.url=jdbc:mysql://localhost:[MySQL PORT]/[SCHEMA_NAME]?useSSL=false&serverTimezone=UTC
+
 spring.datasource.username=[YOUR_SQL_USERNAME]
+
 spring.datasource.password=[YOUR_SQL_PASSWORD]
+
 spring.jpa.hibernate.ddl-auto=update
+
 Note:
 A schema alone will suffice
 
