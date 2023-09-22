@@ -12,10 +12,15 @@ import java.util.NoSuchElementException;
 
 @RestController
 public class CommentsController {
+    // declare repositories for JPA function calls
     @Autowired
     private PostsRepo postsRepo;
     @Autowired
     private CommentsRepo commentsRepo;
+    //  From this point, we annotate with @Mappings to declare our functions
+//    Method to comment in the database. If there are no posts, return with a message and null value for both post and commeny
+//    Returns the newly saved comment back to the user along with the foreign key.
+//    Returns a no post message when no post exists
     @PostMapping(value ="/comment")
     public ResponseEntity<Object> createComment(@RequestBody Comments comment){
         try {
@@ -25,6 +30,10 @@ public class CommentsController {
                 return ResponseHandler.postNotFound("There are no posts with the id: " + comment.getPost_id(), HttpStatus.NOT_FOUND,null, null);
         }
     }
+
+    //    Edits a comment through URL input, use setters and getters to replace/retain values.
+//    Returns the newly edited comment
+//    returns the same error message when there are no comments of that id
     @PatchMapping(value ="/comment/{comment_id}")
     public ResponseEntity<Object> editComment(@PathVariable long comment_id, @RequestBody Comments comment){
         try {
@@ -40,6 +49,8 @@ public class CommentsController {
             return ResponseHandler.genericErrorException(e.getMessage(), HttpStatus.MULTI_STATUS,null);
         }
     }
+    //    Deletes a comment. We declare a boolean flag to use the functions in our ResponseHandler.
+//        We return with a message if successful/!successful along with the status code and our flag
     @DeleteMapping(value ="/comment/{comment_id}")
     public ResponseEntity<Object> deleteComment(@PathVariable long comment_id){
         try {

@@ -1,6 +1,5 @@
 package com.padrejuan.blogapi.Controllers;
 import com.padrejuan.blogapi.Models.Posts;
-import com.padrejuan.blogapi.Repos.CommentsRepo;
 import com.padrejuan.blogapi.Repos.PostsRepo;
 import com.padrejuan.blogapi.Response.ResponseHandler;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,10 +12,12 @@ import java.util.NoSuchElementException;
 
 @RestController
 public class PostsController {
+    // declare repositories for JPA function calls
     @Autowired
     private PostsRepo postsRepo;
-    @Autowired
-    private CommentsRepo commentsRepo;
+//  From this point, we annotate with @Mappings to declare our functions
+//    Method to get posts in the database. If there are no posts, return with a message and null value
+//    Returns a ResponseEntity object when successfully retrieved from the database
     @GetMapping(value = "/posts")
     public ResponseEntity<Object> getPosts(){
         try {
@@ -30,6 +31,8 @@ public class PostsController {
          }
     }
 
+//    Get a specific post through inputting an ID in the url. Same functionalities,
+//    but this time, findByID is used
     @GetMapping(value = "/posts/{post_id}")
     public ResponseEntity<Object> getSpecificPost(@PathVariable long post_id) {
         try {
@@ -42,6 +45,7 @@ public class PostsController {
             return ResponseHandler.genericErrorException(e.getMessage(), HttpStatus.MULTI_STATUS,null);
            }
     }
+//    Saves a post using .save method in JPA repository. Returns the newly saved post
     @PostMapping(value = "/posts")
     public ResponseEntity<Object> savePost(@RequestBody Posts post){
         try {
@@ -52,6 +56,8 @@ public class PostsController {
         }
     }
 
+//    Edits  a posts through URL input, use setters and getters to replace/retain values.
+//    Returns the newly edited post, if there are no posts with given id, returns an error msg
     @PatchMapping(value ="/posts/{post_id}")
     public ResponseEntity<Object> editPost(@PathVariable long post_id, @RequestBody Posts post){
         try {
@@ -68,6 +74,8 @@ public class PostsController {
             return ResponseHandler.genericErrorException(e.getMessage(), HttpStatus.MULTI_STATUS,null);
         }
     }
+//    Deletes a post. We declare a boolean flag to use the functions in our ResponseHandler.
+//        We return with a message if successful/!successful along with the status code and our flag
     @DeleteMapping(value ="/posts/{post_id}")
     public ResponseEntity<Object> deletePost(@PathVariable long post_id){
         try {
